@@ -1,0 +1,76 @@
+<div class="container">
+  <div class="header">
+    <div class="header-content">
+      <h1>Available Jobs</h1>
+      <p class="subtitle">Find your next career opportunity</p>
+    </div>
+    <button mat-raised-button color="primary" routerLink="/jobs/new" class="post-job-btn">
+      <mat-icon>add_circle</mat-icon>
+      Post a Job
+    </button>
+  </div>
+
+  <div class="job-list" *ngIf="jobs.length > 0; else noJobs">
+    <mat-card class="job-card" *ngFor="let job of jobs" (click)="job.id !== undefined && viewJobDetails(job.id)">
+      <div class="job-card-header">
+        <h2 class="job-title">{{ job.job_title }}</h2>
+        <div class="job-meta">
+          <span class="company">
+            <mat-icon>business</mat-icon>
+            {{ job.company_name }}
+          </span>
+          <span class="location">
+            <mat-icon>location_on</mat-icon>
+            {{ job.location }}
+          </span>
+        </div>
+      </div>
+      
+      <mat-card-content>
+        <div class="job-info">
+          <div class="info-item">
+            <mat-icon>work</mat-icon>
+            <span>{{ job.job_type }}</span>
+          </div>
+          
+          <div class="info-item" *ngIf="job.salary_range">
+            <mat-icon>attach_money</mat-icon>
+            <span>{{ job.salary_range }}</span>
+          </div>
+          
+          <div class="info-item">
+            <mat-icon>event</mat-icon>
+            <span>Deadline: {{ job.application_deadline | date }}</span>
+          </div>
+        </div>
+      </mat-card-content>
+      
+      <mat-card-actions>
+        <button mat-flat-button class="apply-btn" (click)="job.id !== undefined && applyForJob(job.id, $event)">
+          <mat-icon>send</mat-icon>
+          APPLY
+        </button>
+        <div class="action-buttons">
+          <button mat-icon-button color="accent" (click)="job.id !== undefined && editJob(job.id, $event)" matTooltip="Edit Job">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="job.id !== undefined && deleteJob(job.id, $event)" matTooltip="Delete Job">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <ng-template #noJobs>
+    <div class="no-jobs">
+      <mat-icon class="empty-icon">work_off</mat-icon>
+      <h2>No jobs available at the moment</h2>
+      <p>Be the first to post a job opportunity</p>
+      <button mat-raised-button color="primary" routerLink="/jobs/new">
+        <mat-icon>add_circle</mat-icon>
+        Post a Job
+      </button>
+    </div>
+  </ng-template>
+</div>

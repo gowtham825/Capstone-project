@@ -1,0 +1,30 @@
+<div class="app-container">
+  <mat-toolbar color="primary" class="app-header">
+    <div class="logo" routerLink="/jobs">{{ title }}</div>
+    <span class="spacer"></span>
+    <nav>
+      <a mat-button routerLink="/jobs" routerLinkActive="active">
+        <mat-icon>work</mat-icon>
+        Jobs
+      </a>
+      <a mat-button routerLink="/jobs/new" routerLinkActive="active">
+        <mat-icon>add_circle</mat-icon>
+        Post a Job
+      </a>
+      <a mat-button routerLink="/applications" routerLinkActive="active">
+        <mat-icon>assignment</mat-icon>
+        Applications
+      </a>
+    </nav>
+  </mat-toolbar>
+  
+  <main class="app-content">
+    <router-outlet></router-outlet>
+  </main>
+  
+  <footer class="app-footer">
+    <div class="footer-content">
+      <p>&copy; 2025 Job Portal. All rights reserved.</p>
+    </div>
+  </footer>
+</div>

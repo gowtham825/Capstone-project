@@ -1,0 +1,79 @@
+<div class="container">
+  <div class="header">
+    <div class="header-content">
+      <h1>Submitted Applications</h1>
+      <p class="subtitle">Track all job applications in one place</p>
+    </div>
+  </div>
+  
+  <div class="applications-container" *ngIf="applications.length > 0; else noApplications">
+    <div class="table-container">
+      <table mat-table [dataSource]="applications" class="applications-table">
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Applicant Name</th>
+          <td mat-cell *matCellDef="let application">
+            <div class="applicant-info">
+              <div class="avatar">{{ application.name }}</div>
+              <span>{{ application.name }}</span>
+            </div>
+          </td>
+        </ng-container>
+        
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef>Email</th>
+          <td mat-cell *matCellDef="let application">
+            <div class="email-cell">
+              <mat-icon>email</mat-icon>
+              <span>{{ application.email }}</span>
+            </div>
+          </td>
+        </ng-container>
+        
+        <ng-container matColumnDef="jobTitle">
+          <th mat-header-cell *matHeaderCellDef>Job Title</th>
+          <td mat-cell *matCellDef="let application">
+            <div class="job-title-cell">
+              <mat-icon>work</mat-icon>
+              <span>{{ application.job?.job_title }}</span>
+            </div>
+          </td>
+        </ng-container>
+        
+        <ng-container matColumnDef="company">
+          <th mat-header-cell *matHeaderCellDef>Company</th>
+          <td mat-cell *matCellDef="let application">
+            <div class="company-cell">
+              <mat-icon>business</mat-icon>
+              <span>{{ application.job?.company_name }}</span>
+            </div>
+          </td>
+        </ng-container>
+        
+        <ng-container matColumnDef="appliedAt">
+          <th mat-header-cell *matHeaderCellDef>Applied On</th>
+          <td mat-cell *matCellDef="let application">
+            <div class="date-cell">
+              <mat-icon>event</mat-icon>
+              <span>{{ application.appliedAt | date }}</span>
+            </div>
+          </td>
+        </ng-container>
+        
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+  </div>
+  
+  <ng-template #noApplications>
+    <div class="no-applications">
+      <mat-icon class="empty-icon">inbox</mat-icon>
+      <h2>No applications submitted yet</h2>
+      <p>Start applying for jobs to see your applications here</p>
+      <button mat-raised-button color="primary" routerLink="/jobs">
+        <mat-icon>search</mat-icon>
+        Browse Jobs
+      </button>
+    </div>
+  </ng-template>
+</div>

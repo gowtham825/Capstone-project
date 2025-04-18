@@ -1,0 +1,119 @@
+<div class="container">
+  <mat-card class="job-form-card">
+    <div class="card-header">
+      <mat-card-header>
+        <div class="header-content">
+          <mat-card-title>{{ isEditMode ? 'Edit Job' : 'Post a Job' }}</mat-card-title>
+          <mat-card-subtitle>Fill in the details below to create a job listing</mat-card-subtitle>
+        </div>
+      </mat-card-header>
+    </div>
+
+    <form [formGroup]="jobForm" (ngSubmit)="onSubmit()">
+      <mat-card-content>
+        <div class="form-section">
+          <h3 class="form-section-title">Basic Information</h3>
+          
+          <div class="form-field">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Job Title</mat-label>
+              <input matInput formControlName="job_title" placeholder="Enter job title">
+              <mat-icon matPrefix>work</mat-icon>
+              <mat-error *ngIf="jobForm.controls['job_title'].hasError('required')">
+                Job title is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <div class="form-field">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Company Name</mat-label>
+                <input matInput formControlName="company_name" placeholder="Enter company name">
+                <mat-icon matPrefix>business</mat-icon>
+                <mat-error *ngIf="jobForm.controls['company_name'].hasError('required')">
+                  Company name is required
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="form-field">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Location</mat-label>
+                <input matInput formControlName="location" placeholder="Enter job location">
+                <mat-icon matPrefix>location_on</mat-icon>
+                <mat-error *ngIf="jobForm.controls['location'].hasError('required')">
+                  Location is required
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-field">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Job Type</mat-label>
+                <mat-select formControlName="job_type">
+                  <mat-option *ngFor="let type of jobTypes" [value]="type">
+                    {{ type }}
+                  </mat-option>
+                </mat-select>
+                <mat-icon matPrefix>category</mat-icon>
+                <mat-error *ngIf="jobForm.controls['job_type'].hasError('required')">
+                  Job type is required
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="form-field">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Salary Range (Optional)</mat-label>
+                <input matInput formControlName="salary_range" placeholder="e.g. $50,000 - $70,000">
+                <mat-icon matPrefix>attach_money</mat-icon>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3 class="form-section-title">Job Details</h3>
+          
+          <div class="form-field">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Job Description</mat-label>
+              <textarea matInput formControlName="job_description" placeholder="Enter job description" rows="6"></textarea>
+              <mat-icon matPrefix>description</mat-icon>
+              <mat-error *ngIf="jobForm.controls['job_description'].hasError('required')">
+                Job description is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="form-field">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Application Deadline</mat-label>
+              <input matInput [matDatepicker]="picker" formControlName="application_deadline">
+              <mat-icon matPrefix>event</mat-icon>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-error *ngIf="jobForm.controls['application_deadline'].hasError('required')">
+                Application deadline is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button mat-stroked-button type="button" (click)="goBack()">
+          <mat-icon>arrow_back</mat-icon>
+          Cancel
+        </button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="jobForm.invalid" class="submit-button">
+          <mat-icon>{{ isEditMode ? 'update' : 'add_circle' }}</mat-icon>
+          {{ isEditMode ? 'Update Job' : 'Post Job' }}
+        </button>
+      </mat-card-actions>
+    </form>
+  </mat-card>
+</div>

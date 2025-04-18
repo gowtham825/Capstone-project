@@ -1,0 +1,95 @@
+<div class="container">
+  <mat-card class="application-card">
+    <div class="card-header">
+      <mat-card-header>
+        <div class="header-content">
+          <mat-card-title>Apply for Job</mat-card-title>
+          <mat-card-subtitle *ngIf="job">{{ job.job_title }} at {{ job.company_name }}</mat-card-subtitle>
+        </div>
+      </mat-card-header>
+    </div>
+    
+    <div class="job-details" *ngIf="job">
+      <div class="detail-item">
+        <div class="detail-icon">
+          <mat-icon>location_on</mat-icon>
+        </div>
+        <div class="detail-text">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">{{ job.location }}</span>
+        </div>
+      </div>
+      
+      <div class="detail-item">
+        <div class="detail-icon">
+          <mat-icon>work</mat-icon>
+        </div>
+        <div class="detail-text">
+          <span class="detail-label">Job Type</span>
+          <span class="detail-value">{{ job.job_type }}</span>
+        </div>
+      </div>
+      
+      <div class="detail-item" *ngIf="job.salary_range">
+        <div class="detail-icon">
+          <mat-icon>attach_money</mat-icon>
+        </div>
+        <div class="detail-text">
+          <span class="detail-label">Salary</span>
+          <span class="detail-value">{{ job.salary_range }}</span>
+        </div>
+      </div>
+      
+      <div class="detail-item">
+        <div class="detail-icon">
+          <mat-icon>event</mat-icon>
+        </div>
+        <div class="detail-text">
+          <span class="detail-label">Application Deadline</span>
+          <span class="detail-value">{{ job.application_deadline | date }}</span>
+        </div>
+      </div>
+    </div>
+    
+    <form [formGroup]="applicationForm" (ngSubmit)="onSubmit()">
+      <mat-card-content>
+        <div class="form-section">
+          <h3 class="form-section-title">Personal Information</h3>
+          
+          <div class="form-field">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Full Name</mat-label>
+              <input matInput formControlName="applicant_name" placeholder="Enter your full name">
+              <mat-icon matPrefix>person</mat-icon>
+              <mat-error *ngIf="applicationForm.controls['applicant_name'].hasError('required')">Name is required</mat-error>
+            </mat-form-field>
+          </div>
+          
+          <div class="form-field">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="email" placeholder="Enter your email address" type="email">
+              <mat-icon matPrefix>email</mat-icon>
+              <mat-error *ngIf="applicationForm.controls['email'].hasError('required')">Email is required</mat-error>
+              <mat-error *ngIf="applicationForm.controls['email'].hasError('email')">Please enter a valid email address</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card-content>
+      
+      <mat-card-actions>
+        <button type="button" mat-stroked-button (click)="goBack()">
+          <mat-icon>arrow_back</mat-icon>
+          Cancel
+        </button>
+        <button type="submit" mat-raised-button color="primary" [disabled]="submitting" class="submit-button">
+          <mat-spinner diameter="20" *ngIf="submitting"></mat-spinner>
+          <span *ngIf="!submitting">
+            <mat-icon>send</mat-icon>
+            Submit Application
+          </span>
+        </button>
+      </mat-card-actions>
+    </form>
+  </mat-card>
+</div>

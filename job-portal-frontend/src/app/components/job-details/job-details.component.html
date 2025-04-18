@@ -1,0 +1,45 @@
+<div class="container" *ngIf="job">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{ job.job_title }}</mat-card-title>
+      <mat-card-subtitle>{{ job.company_name }} | {{ job.location }}</mat-card-subtitle>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <div class="job-info">
+        <p><strong>Job Type</strong> {{ job.job_type }}</p>
+        <p *ngIf="job.salary_range"><strong>Salary</strong> {{ job.salary_range }}</p>
+        <p><strong>Application Deadline</strong> {{ job.application_deadline | date }}</p>
+      </div>
+      
+      <div class="job-description">
+        <h2>Job Description</h2>
+        <p>{{ job.job_description }}</p>
+      </div>
+    </mat-card-content>
+    
+    <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="applyForJob()">
+        <mat-icon>send</mat-icon>
+        Apply Now
+      </button>
+      <button mat-raised-button color="accent" (click)="editJob()">
+        <mat-icon>edit</mat-icon>
+        Edit
+      </button>
+      <button mat-raised-button color="warn" (click)="deleteJob()">
+        <mat-icon>delete</mat-icon>
+        Delete
+      </button>
+      <button mat-stroked-button (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+        Back to Jobs
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
+<div class="loading" *ngIf="!job">
+  <mat-spinner></mat-spinner>
+  <p>Loading job details...</p>
+</div>
