@@ -28,7 +28,22 @@
     }
   }
 }
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  margin-right: 10px;
+}
 
+.applicant-info {
+  display: flex;
+  align-items: center;
+}
 .applications-container {
   background-color: white;
   border-radius: 16px;

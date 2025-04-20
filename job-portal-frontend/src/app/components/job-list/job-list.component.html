@@ -1,18 +1,69 @@
 <div class="container">
+  <app-error-message *ngIf="errorMessage" [errorMessage]="errorMessage"></app-error-message>
+  
   <div class="header">
     <div class="header-content">
       <h1>Available Jobs</h1>
       <p class="subtitle">Find your next career opportunity</p>
     </div>
-    <button mat-raised-button color="primary" routerLink="/jobs/new" class="post-job-btn">
-      <mat-icon>add_circle</mat-icon>
-      Post a Job
+    <button 
+      *ngIf="userRoleService.isEmployee" 
+      class="post-job-btn" 
+      [routerLink]="['/employee/jobs/new']">
+      + Post a Job
     </button>
+  </div>
+  
+  <div class="filter-section">
+    <div class="filter-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Job Type</mat-label>
+        <mat-select [(value)]="selectedJobType">
+          <mat-option value="">All Job Types</mat-option>
+          <mat-option value="Full Time">Full Time</mat-option>
+          <mat-option value="Part Time">Part Time</mat-option>
+          <mat-option value="Internship">Internship</mat-option>
+          <mat-option value="Remote">Remote</mat-option>
+          <mat-option value="Contract">Contract</mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline">
+        <mat-label>Location</mat-label>
+        <mat-select [(value)]="selectedLocation">
+          <mat-option value="">All Locations</mat-option>
+          <mat-option *ngFor="let location of uniqueLocations" [value]="location">
+            {{location}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline">
+        <mat-label>Salary Range</mat-label>
+        <mat-select [(value)]="selectedSalaryRange">
+          <mat-option value="">All Salaries</mat-option>
+          <mat-option value="0-10000">0 - 10,000</mat-option>
+          <mat-option value="10000-50000">10,000 - 50,000</mat-option>
+          <mat-option value="50000-100000">50,000 - 100,000</mat-option>
+          <mat-option value="100000-200000">100,000 - 200,000</mat-option>
+          <mat-option value="200000+">200,000+</mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      <div class="filter-buttons">
+        <button mat-raised-button color="primary" (click)="applyFilters()" class="apply-filter-btn">
+          Apply Filters
+        </button>
+        <button mat-stroked-button (click)="resetFilters()" class="reset-filter-btn">
+          Reset
+        </button>
+      </div>
+    </div>
   </div>
 
   <div class="job-list" *ngIf="jobs.length > 0; else noJobs">
-    <mat-card class="job-card" *ngFor="let job of jobs" (click)="job.id !== undefined && viewJobDetails(job.id)">
-      <div class="job-card-header">
+    <mat-card class="job-card" *ngFor="let job of jobs">
+      <div class="job-card-header" (click)="viewJobDetails(job)">
         <h2 class="job-title">{{ job.job_title }}</h2>
         <div class="job-meta">
           <span class="company">
@@ -26,7 +77,7 @@
         </div>
       </div>
       
-      <mat-card-content>
+      <mat-card-content (click)="viewJobDetails(job)">
         <div class="job-info">
           <div class="info-item">
             <mat-icon>work</mat-icon>
@@ -46,15 +97,15 @@
       </mat-card-content>
       
       <mat-card-actions>
-        <button mat-flat-button class="apply-btn" (click)="job.id !== undefined && applyForJob(job.id, $event)">
+        <button *ngIf="!userRoleService.isEmployee" mat-flat-button class="apply-btn" (click)="$event.stopPropagation(); navigateToApply(job)">
           <mat-icon>send</mat-icon>
           APPLY
         </button>
         <div class="action-buttons">
-          <button mat-icon-button color="accent" (click)="job.id !== undefined && editJob(job.id, $event)" matTooltip="Edit Job">
+          <button *ngIf="userRoleService.isEmployee" mat-icon-button color="accent" (click)="$event.stopPropagation(); navigateToEdit(job)" matTooltip="Edit Job">
             <mat-icon>edit</mat-icon>
           </button>
-          <button mat-icon-button color="warn" (click)="job.id !== undefined && deleteJob(job.id, $event)" matTooltip="Delete Job">
+          <button *ngIf="userRoleService.isEmployee" mat-icon-button color="warn" (click)="$event.stopPropagation(); confirmDelete(job)" matTooltip="Delete Job">
             <mat-icon>delete</mat-icon>
           </button>
         </div>
@@ -66,11 +117,11 @@
     <div class="no-jobs">
       <mat-icon class="empty-icon">work_off</mat-icon>
       <h2>No jobs available at the moment</h2>
-      <p>Be the first to post a job opportunity</p>
-      <button mat-raised-button color="primary" routerLink="/jobs/new">
+      <!-- <p>Be the first to post a job opportunity</p> -->
+      <!-- <button mat-raised-button color="primary" routerLink="/job-searcher/jobs">
         <mat-icon>add_circle</mat-icon>
         Post a Job
-      </button>
+      </button> -->
     </div>
   </ng-template>
 </div>

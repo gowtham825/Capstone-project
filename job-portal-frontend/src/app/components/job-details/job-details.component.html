@@ -1,4 +1,5 @@
 <div class="container" *ngIf="job">
+  <app-error-message *ngIf="errorMessage" [errorMessage]="errorMessage"></app-error-message>
   <mat-card>
     <mat-card-header>
       <mat-card-title>{{ job.job_title }}</mat-card-title>
@@ -19,22 +20,24 @@
     </mat-card-content>
     
     <mat-card-actions>
-      <button mat-raised-button color="primary" (click)="applyForJob()">
+      <button *ngIf="!userRoleService.isEmployee" mat-flat-button class="apply-btn" (click)="navigateToApply(job)">
         <mat-icon>send</mat-icon>
         Apply Now
       </button>
-      <button mat-raised-button color="accent" (click)="editJob()">
-        <mat-icon>edit</mat-icon>
-        Edit
-      </button>
-      <button mat-raised-button color="warn" (click)="deleteJob()">
-        <mat-icon>delete</mat-icon>
-        Delete
-      </button>
-      <button mat-stroked-button (click)="goBack()">
-        <mat-icon>arrow_back</mat-icon>
-        Back to Jobs
-      </button>
+      <div class="action-buttons">
+        <button *ngIf="userRoleService.isEmployee" mat-flat-button color="accent" (click)="navigateToEdit(job)" matTooltip="Edit Job">
+          <mat-icon>edit</mat-icon>
+          Edit
+        </button>
+        <button *ngIf="userRoleService.isEmployee" mat-flat-button color="warn" (click)="confirmDelete(job)" matTooltip="Delete Job">
+          <mat-icon>delete</mat-icon>
+          Delete
+        </button>
+        <button mat-stroked-button (click)="goBack()">
+          <mat-icon>arrow_back</mat-icon>
+          Back to Jobs
+        </button>
+      </div>
     </mat-card-actions>
   </mat-card>
 </div>

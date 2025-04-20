@@ -15,9 +15,8 @@ export class JobApplicationFormComponent implements OnInit {
   job: Job | undefined;
   jobId: number | null = null;
   submitting = false;
-  error: string | null = null;
+  errorMessage: string | null = null;
   success: boolean = false;
-  isEditMode: boolean = false; // Add isEditMode property
   
   markFormGroupTouched(formGroup: FormGroup): void {
     Object.values(formGroup.controls).forEach(control => {
@@ -43,7 +42,6 @@ export class JobApplicationFormComponent implements OnInit {
 
   initForm(): void {
     this.applicationForm = this.fb.group({
-      // Rename to match backend field names
       applicant_name: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]]
     });
@@ -53,16 +51,28 @@ export class JobApplicationFormComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.jobId = +id;
-      // Change getJob to getJobById
-      this.jobService.getJobById(this.jobId).subscribe(job => {
-        this.job = job;
+      this.jobService.getJobById(this.jobId).subscribe({
+        next: job => {
+          this.job = job;
+        },
+        error: err => {
+          console.error('Error fetching job details:', err);
+          this.errorMessage = err.message || 'Failed to load job details. Please try again.';
+        }
       });
+    } else {
+      this.errorMessage = 'Job ID is missing';
     }
   }
+  
   goBack(): void {
-    this.router.navigate(['/jobs']);
+    const currentRoute = this.router.url;
+    const basePath = currentRoute.includes('/employee') ? '/employee' : '/job-searcher';
+    this.router.navigate([`${basePath}/jobs`]);
   }
   onSubmit(): void {
+    this.errorMessage = null;
+    
     console.log('Form submitted');
     console.log('Form value:', this.applicationForm.value);
     console.log('Form valid:', this.applicationForm.valid);
@@ -74,7 +84,7 @@ export class JobApplicationFormComponent implements OnInit {
     }
 
     if (!this.jobId) {
-      this.error = 'Job ID is missing';
+      this.errorMessage = 'Job ID is missing';
       return;
     }
   
@@ -93,14 +103,21 @@ export class JobApplicationFormComponent implements OnInit {
         this.success = true;
         // Redirect after 2 seconds to allow user to see success message
         setTimeout(() => {
-          this.router.navigate(['/jobs']);
+          const currentRoute = this.router.url;
+          const basePath = currentRoute.includes('/employee') ? '/employee' : '/job-searcher';
+          this.router.navigate([`${basePath}/jobs`]);
         }, 2000);
       },
       error: (err) => {
         console.error('Error submitting application:', err);
         this.submitting = false;
-        this.error = 'Failed to submit application. Please try again.';
+        this.errorMessage = err.message || 'Failed to submit application. Please try again.';
+        this.success = false;
       }
     });
+  }
+  
+  dismissError(): void {
+    this.errorMessage = null;
   }
 }

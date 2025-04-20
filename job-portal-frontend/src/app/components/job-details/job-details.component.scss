@@ -8,6 +8,7 @@ mat-card {
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   overflow: hidden;
+  border: 1px solid #e5e7eb;
   
   mat-card-header {
     padding: 1.5rem;
@@ -85,48 +86,79 @@ mat-card {
 
 mat-card-actions {
   display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
+  justify-content: space-between;
+  align-items: center;
   padding: 1.5rem;
   border-top: 1px solid #e5e7eb;
+  gap: 1rem;
   
-  button {
+  .apply-btn {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 0.5rem 1.5rem;
     font-weight: 500;
-    border-radius: 8px;
     transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+    min-width: 140px;
     
-    &[color="primary"] {
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-      color: white;
-      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(16, 185, 129, 0.3);
+    }
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    
+    button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0.5rem 1rem;
+      font-weight: 500;
+      border-radius: 8px;
+      transition: all 0.2s ease;
       
       &:hover {
-        box-shadow: 0 6px 16px rgba(16, 185, 129, 0.3);
         transform: translateY(-2px);
       }
-    }
-    
-    &[color="accent"] {
-      background: #f59e0b;
-      color: white;
       
-      &:hover {
-        background: #d97706;
-        transform: translateY(-2px);
+      &[color="accent"] {
+        background-color: #f59e0b;
+        color: white;
+        
+        &:hover {
+          background-color: #d97706;
+          box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+        }
       }
-    }
-    
-    &[color="warn"] {
-      background: #ef4444;
-      color: white;
       
-      &:hover {
-        background: #dc2626;
-        transform: translateY(-2px);
+      &[color="warn"] {
+        background-color: #ef4444;
+        color: white;
+        
+        &:hover {
+          background-color: #dc2626;
+          box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+        }
+      }
+      
+      &[mat-stroked-button] {
+        border: 1px solid #d1d5db;
+        color: #6b7280;
+        background-color: transparent;
+        
+        &:hover {
+          background-color: #f9fafb;
+          border-color: #9ca3af;
+        }
       }
     }
   }
@@ -155,9 +187,51 @@ mat-card-actions {
 @media (max-width: 768px) {
   mat-card-actions {
     flex-direction: column;
+    align-items: stretch;
+    
+    .apply-btn {
+      width: 100%;
+    }
+    
+    .action-buttons {
+      width: 100%;
+      justify-content: space-between;
+      margin-top: 0.75rem;
+      
+      button {
+        flex: 1;
+        justify-content: center;
+        padding: 0.5rem 0.75rem;
+        
+        mat-icon + span {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .job-info p {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 1.25rem;
+    
+    strong {
+      margin-bottom: 0.25rem;
+    }
+  }
+  
+  mat-card-actions .action-buttons {
+    flex-direction: column;
     
     button {
       width: 100%;
+      justify-content: center;
+      
+      mat-icon + span {
+        display: inline;
+      }
     }
   }
 }

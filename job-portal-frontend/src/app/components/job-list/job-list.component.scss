@@ -240,3 +240,77 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* MODIFIED FILTER SECTION */
+.filter-section {
+  margin-bottom: 2rem;
+  width: 100%;
+  
+  .filter-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) auto;
+    gap: 1rem;
+    width: 100%;
+    
+    mat-form-field {
+      width: 100%;
+      
+      &.mat-form-field-appearance-outline {
+        .mat-form-field-wrapper {
+          margin-bottom: 0;
+        }
+      }
+    }
+    
+    .filter-buttons {
+      display: flex;
+      align-items: stretch;
+      gap: 0.5rem;
+      height: 56px; /* Match height with mat-form-field */
+      
+      .apply-filter-btn {
+        flex: 1;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+        height: 100%;
+        min-width: 120px;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+        transition: all 0.2s ease;
+        
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 16px rgba(16, 185, 129, 0.3);
+        }
+      }
+      
+      .reset-filter-btn {
+        flex: 1;
+        height: 100%;
+        color: #6b7280;
+        border: 1px solid #d1d5db;
+        transition: all 0.2s ease;
+        
+        &:hover {
+          transform: translateY(-2px);
+          background-color: #f9fafb;
+        }
+      }
+    }
+  }
+}
+
+// Responsive design for filter section
+@media (max-width: 768px) {
+  .filter-section .filter-row {
+    grid-template-columns: 1fr;
+    
+    .filter-buttons {
+      width: 100%;
+      margin-top: 0.5rem;
+      
+      button {
+        flex: 1;
+      }
+    }
+  }
+}

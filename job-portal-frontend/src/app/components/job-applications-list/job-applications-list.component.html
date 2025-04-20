@@ -1,4 +1,5 @@
 <div class="container">
+  <app-error-message *ngIf="errorMessage" [errorMessage]="errorMessage"></app-error-message>
   <div class="header">
     <div class="header-content">
       <h1>Submitted Applications</h1>
@@ -13,8 +14,11 @@
           <th mat-header-cell *matHeaderCellDef>Applicant Name</th>
           <td mat-cell *matCellDef="let application">
             <div class="applicant-info">
-              <div class="avatar">{{ application.name }}</div>
-              <span>{{ application.name }}</span>
+
+              <div class="avatar" [style.backgroundColor]="getAvatarColor(application.applicant_name)">
+        {{ getFirstLetter(application.applicant_name) }}
+      </div>
+              <span>{{ application.applicant_name }}</span>
             </div>
           </td>
         </ng-container>
@@ -34,7 +38,7 @@
           <td mat-cell *matCellDef="let application">
             <div class="job-title-cell">
               <mat-icon>work</mat-icon>
-              <span>{{ application.job?.job_title }}</span>
+              <span>{{ application.job_title }}</span>
             </div>
           </td>
         </ng-container>
@@ -44,7 +48,7 @@
           <td mat-cell *matCellDef="let application">
             <div class="company-cell">
               <mat-icon>business</mat-icon>
-              <span>{{ application.job?.company_name }}</span>
+              <span>{{ application.company_name }}</span>
             </div>
           </td>
         </ng-container>
@@ -54,7 +58,7 @@
           <td mat-cell *matCellDef="let application">
             <div class="date-cell">
               <mat-icon>event</mat-icon>
-              <span>{{ application.appliedAt | date }}</span>
+              <span>{{ application.applied_at | date }}</span>
             </div>
           </td>
         </ng-container>

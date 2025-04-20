@@ -1,30 +1,70 @@
+<!-- app.component.html -->
+<!-- Main application template that sets up the layout structure -->
+
 <div class="app-container">
-  <mat-toolbar color="primary" class="app-header">
-    <div class="logo" routerLink="/jobs">{{ title }}</div>
-    <span class="spacer"></span>
-    <nav>
-      <a mat-button routerLink="/jobs" routerLinkActive="active">
-        <mat-icon>work</mat-icon>
-        Jobs
-      </a>
-      <a mat-button routerLink="/jobs/new" routerLinkActive="active">
-        <mat-icon>add_circle</mat-icon>
-        Post a Job
-      </a>
-      <a mat-button routerLink="/applications" routerLinkActive="active">
-        <mat-icon>assignment</mat-icon>
-        Applications
-      </a>
-    </nav>
-  </mat-toolbar>
-  
-  <main class="app-content">
+  <!-- Conditional rendering: Show different layout for home page vs other pages -->
+  <ng-container *ngIf="isHome(); else mainLayout">
+    <!-- Just render the router outlet for home page without headers/footers -->
     <router-outlet></router-outlet>
-  </main>
+  </ng-container>
   
-  <footer class="app-footer">
-    <div class="footer-content">
-      <p>&copy; 2025 Job Portal. All rights reserved.</p>
-    </div>
-  </footer>
+  <!-- Template for all non-home pages with full layout -->
+  <ng-template #mainLayout>
+    <!-- Application header toolbar -->
+    <mat-toolbar color="primary" class="app-header">
+      <div class="toolbar-content">
+        <!-- App logo/title that links to home -->
+        <div class="logo" routerLink="/">{{ title }}</div>
+        
+        <!-- Navigation menu for job seekers -->
+        <ng-container *ngIf="isJobSeekerRoute()">
+          <nav class="nav-center">
+            <!-- Jobs listing link -->
+            <a mat-button routerLink="/job-searcher/jobs" routerLinkActive="active">
+              <mat-icon>work</mat-icon>
+              Jobs
+            </a>
+            <!-- Applications link -->
+            <a mat-button routerLink="/job-searcher/applications" routerLinkActive="active">
+              <mat-icon>assignment</mat-icon>
+              Applications
+            </a>
+          </nav>
+        </ng-container>
+        
+        <!-- Navigation menu for employers -->
+        <ng-container *ngIf="isEmployeeRoute()">
+          <nav class="nav-center">
+            <!-- Jobs management link -->
+            <a mat-button routerLink="/employee/jobs" routerLinkActive="active">
+              <mat-icon>work</mat-icon>
+              Jobs
+            </a>
+            <!-- Create new job link -->
+            <a mat-button routerLink="/employee/jobs/new" routerLinkActive="active">
+              <mat-icon>add_circle</mat-icon>
+              Post a Job
+            </a>
+            <!-- Applications review link -->
+            <a mat-button routerLink="/employee/applications" routerLinkActive="active">
+              <mat-icon>assignment</mat-icon>
+              Applications
+            </a>
+          </nav>
+        </ng-container>
+      </div>
+    </mat-toolbar>
+    
+    <!-- Main content area -->
+    <main class="app-content">
+      <router-outlet></router-outlet>
+    </main>
+    
+    <!-- Application footer -->
+    <footer class="app-footer">
+      <div class="footer-content">
+        <p>&copy; 2025 Job Portal. All rights reserved.</p>
+      </div>
+    </footer>
+  </ng-template>
 </div>

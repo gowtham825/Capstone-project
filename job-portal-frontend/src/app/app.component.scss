@@ -1,83 +1,211 @@
+// Main container styles
 .app-container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
+// Green color variables
+$primary-green: #00b67a;
+$primary-green-dark: #009e69;
+$primary-green-light: #33c492;
+$primary-green-lighter: rgba(0, 182, 122, 0.1);
+$primary-green-hover: rgba(0, 182, 122, 0.15);
+
+// Header styles
 .app-header {
+  padding: 0;
+  height: 64px;
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: $primary-green !important; // Override Material primary color
+}
+
+.toolbar-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative; // Important for absolute positioning of nav-center
+  height: 100%;
+}
+
+// Logo styles
+.logo {
+  cursor: pointer;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: opacity 0.2s ease;
+  white-space: nowrap;
+  color: white;
   
-  .logo {
-    font-size: 1.5rem;
-    font-weight: 600;
-    cursor: pointer;
-    letter-spacing: -0.5px;
-    transition: transform 0.2s ease;
-    
-    &:hover {
-      transform: translateY(-2px);
-    }
-  }
-  
-  .spacer {
-    flex: 1;
-  }
-  
-  nav {
-    a {
-      margin-left: 8px;
-      border-radius: 8px;
-      font-weight: 500;
-      transition: all 0.2s ease;
-      
-      &.active {
-        background-color: rgba(255, 255, 255, 0.15);
-      }
-      
-      &:hover {
-        background-color: rgba(255, 255, 255, 0.1);
-        transform: translateY(-2px);
-      }
-    }
+  &:hover {
+    opacity: 0.9;
   }
 }
 
+// Center navigation
+.nav-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 100%;
+}
+
+.nav-center a {
+  min-width: 110px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+  position: relative;
+  color: white;
+  
+  &.active {
+    background-color: rgba(255, 255, 255, 0.15);
+    
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -12px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background-color: white;
+    }
+  }
+  
+  &:hover:not(.active) {
+    background-color: $primary-green-dark;
+  }
+  
+  mat-icon {
+    margin-right: 6px;
+    font-size: 20px;
+    height: 20px;
+    width: 20px;
+  }
+}
+
+// Content area
 .app-content {
   flex: 1;
-  padding: 20px 0;
-  background-color: #f9fafb;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 24px;
 }
 
+// Footer styles
 .app-footer {
-  background-color: #111827;
-  padding: 2rem 0;
-  
-  .footer-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-    text-align: center;
-    color: #d1d5db;
+  text-align: center;
+  padding: 16px;
+  background-color: #f5f5f5;
+  border-top: 1px solid #e0e0e0;
+}
+
+.footer-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+// Button styles to match green theme
+.mat-button, .mat-raised-button, .mat-flat-button {
+  &.mat-primary {
+    background-color: $primary-green;
     
-    p {
-      font-size: 0.95rem;
+    &:hover {
+      background-color: $primary-green-dark;
     }
   }
 }
 
+// Apply button styles
+.apply-button {
+  background-color: $primary-green !important;
+  color: white !important;
+  
+  &:hover {
+    background-color: $primary-green-dark !important;
+  }
+}
+
+// Job card styles
+.job-card {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #eaeaea;
+  
+  .job-title {
+    color: #333;
+    font-weight: 600;
+  }
+  
+  .company-name {
+    color: $primary-green;
+  }
+}
+
+// Responsive adjustments
 @media (max-width: 768px) {
-  .app-header {
-    .logo {
-      font-size: 1.2rem;
+  .nav-center {
+    position: static;
+    transform: none;
+    justify-content: center;
+    width: 100%;
+    margin-left: 16px;
+  }
+  
+  .toolbar-content {
+    justify-content: space-between;
+  }
+  
+  .logo {
+    font-size: 1.2rem;
+  }
+  
+  .nav-center a {
+    min-width: auto;
+    padding: 0 8px;
+    
+    span {
+      display: none;
     }
     
-    nav a {
-      margin-left: 4px;
-      padding: 0 8px;
+    mat-icon {
+      margin-right: 0;
     }
+  }
+}
+
+// Override Angular Material theme colors
+::ng-deep {
+  .mat-toolbar.mat-primary {
+    background-color: $primary-green;
+  }
+  
+  .mat-button.mat-primary, 
+  .mat-icon-button.mat-primary, 
+  .mat-stroked-button.mat-primary {
+    color: $primary-green;
+  }
+  
+  .mat-flat-button.mat-primary, 
+  .mat-raised-button.mat-primary, 
+  .mat-fab.mat-primary, 
+  .mat-mini-fab.mat-primary {
+    background-color: $primary-green;
   }
 }
